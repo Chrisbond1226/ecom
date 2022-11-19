@@ -1,52 +1,56 @@
 const router = require("express").Router();
-const { model } = require("mongoose");
-const { UPSERT } = require("sequelize/types/lib/query-types");
 const { Category, Product } = require("../../models");
 
-// The `/api/categories` endpoint
-
+// GET all categories
 router.get("/", (req, res) => {
-  // find all categories
-  // be sure to include its associated Products
   Category.findAll({
-    // includes all from product as well as category
     include: [{ model: Product }],
-  });
+  })
+    .then((categories) => res.json(categories))
+    .catch((err) => res.status(500).json(err));
 });
 
+// GET one category
 router.get("/:id", (req, res) => {
-  // find one category by its `id` value
-  // be sure to include its associated Products
   Category.findOne({
     where: {
       id: req.params.id,
     },
     include: [{ model: Product }],
-  });
+  })
+    .then((categories) => res.json(categories))
+    .catch((err) => res.status(500).json(err));
 });
 
+// POST new category
 router.post("/", (req, res) => {
-  // create a new category
   Category.create({
     category_name: req.body.category_name,
-  });
+  })
+    .then((categories) => res.json(categories))
+    .catch((err) => res.status(500).json(err));
 });
 
+// UPDATE old category
 router.put("/:id", (req, res) => {
   Category.update(req.body, {
     where: {
       id: req.params.id,
     },
-  });
+  })
+    .then((categories) => res.json(categories))
+    .catch((err) => res.status(500).json(err));
 });
 
+// DELETE category
 router.delete("/:id", (req, res) => {
-  // delete a category by its `id` value
-  UPSERT.destroy({
+  Category.destroy({
     where: {
       id: req.params.id,
     },
-  });
+  })
+    .then((categories) => res.json(categories))
+    .catch((err) => res.status(500).json(err));
 });
 
 module.exports = router;

@@ -1,4 +1,3 @@
-const { INTEGER } = require("sequelize");
 const { Model, DataTypes } = require("sequelize");
 
 const sequelize = require("../config/connection.js");
@@ -15,7 +14,6 @@ Tag.init(
     },
     tag_name: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
   },
   {
